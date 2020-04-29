@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music/common/api/HttpManager.dart';
 import 'package:music/common/theme/Theme.dart';
-import 'package:music/widget/RoundImage.dart';
+import 'package:music/widget/VideoPlayerPage.dart';
 
 class TabVideo extends StatelessWidget {
   @override
@@ -74,7 +74,7 @@ class MvPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: HttpManager.init().get("/mv/all", {"limit": 15,"area":'内地'}),
+        future: HttpManager.init().get("/mv/all", {"limit": 15, "area": '内地'}),
         builder: (BuildContext c, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Response response = snapshot.data;
@@ -96,19 +96,7 @@ class MvPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                          width: double.infinity,
-                          height: ScreenUtil.getInstance().setHeight(560),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              image: DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.fill),
-                              borderRadius: BorderRadius.all(Radius.circular(5))),
-                          child: Text(
-                            "1111",
-                          ),
-                        ),
+                        VideoCard(item,imgUrl),
                         Row(
                           children: <Widget>[
                             Expanded(
@@ -116,8 +104,8 @@ class MvPage extends StatelessWidget {
                               child: Text(name, style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(48))),
                             ),
                             CircleAvatar(
-                                radius:20,
-                              child: Image.network(imgUrl),
+                              radius: 20,
+                              child: Image.network(imgUrl,fit: BoxFit.fill),
                             )
                           ],
                         )
@@ -127,6 +115,49 @@ class MvPage extends StatelessWidget {
                 });
           }
           return Text("");
+        });
+  }
+
+  buildVideoCard(imgUrl, item) async {
+    return FutureBuilder(
+        future: HttpManager.init().get("/mv/url", {"id": item['id']}),
+        builder: (BuildContext c, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Response response = snapshot.data;
+            var result = response.data['data'];
+            return VideoPlayerPage(
+              url: imgUrl,
+              item: result,
+            );
+          }
+          return Container();
+        });
+  }
+}
+
+class VideoCard extends StatelessWidget {
+  var url;
+  var item;
+
+  VideoCard(item, url) {
+    this.url = url;
+    this.item = item;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: HttpManager.init().get("/mv/url", {"id": item['id']}),
+        builder: (BuildContext c, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Response response = snapshot.data;
+            var result = response.data['data'];
+            return VideoPlayerPage(
+              url: url,
+              item: result,
+            );
+          }
+          return Container();
         });
   }
 }

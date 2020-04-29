@@ -23,7 +23,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
           var songs = response.data["songs"];
           var picUrl = songs[0]['al']['picUrl'];
           var title = songs[0]['al']['name'];
-          var desc = songs[0]['al']['picUrl'];
 
           return Row(
             children: <Widget>[
