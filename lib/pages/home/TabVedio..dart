@@ -55,10 +55,10 @@ class _TabPersonState extends State<TabVideoPage> {
               color: RedTheme.colorFFFFFF,
               child: new TabBarView(
                 children: <Widget>[
-                  MvPage(),
-                  Text("1111"),
-                  Text("1111"),
-                  Text("1111"),
+                  MvPage(0),
+                  MvPage(1),
+                  MvPage(2),
+                  MvPage(3)
                 ],
               ),
             )));
@@ -71,14 +71,32 @@ class _TabPersonState extends State<TabVideoPage> {
 }
 
 class MvPage extends StatelessWidget {
+  int index;
+  List list = [
+    "/mv/all",
+    "/personalized/mv",
+    "/mv/first",
+    "/mv/exclusive/rcmd",
+  ];
+
+  MvPage(int index) {
+    this.index = index;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: HttpManager.init().get("/mv/all", {"limit": 15, "area": '内地'}),
+        future: HttpManager.init().get(list[index], {"limit": 15, "area": '内地'}),
         builder: (BuildContext c, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Response response = snapshot.data;
-            var respList = response.data['data'];
+            var respList;
+            print(response.data);
+            if(index != 1){
+              respList = response.data['data'];
+            }else{
+              respList = response.data['result'];
+            }
             return ListView.separated(
                 itemCount: respList.length,
                 separatorBuilder: (BuildContext context, int index) {
@@ -91,12 +109,15 @@ class MvPage extends StatelessWidget {
                 itemBuilder: (c, i) {
                   var item = respList[i];
                   var imgUrl = item['cover'];
+                  if(index ==1){
+                    imgUrl = item['picUrl'];
+                  }
                   var name = item['name'];
                   return Padding(
                     padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
                     child: Column(
                       children: <Widget>[
-                        VideoCard(item,imgUrl),
+                        VideoCard(item, imgUrl),
                         Row(
                           children: <Widget>[
                             Expanded(
@@ -105,7 +126,7 @@ class MvPage extends StatelessWidget {
                             ),
                             CircleAvatar(
                               radius: 20,
-                              child: Image.network(imgUrl,fit: BoxFit.fill),
+                              child: Image.network(imgUrl, fit: BoxFit.fill),
                             )
                           ],
                         )
