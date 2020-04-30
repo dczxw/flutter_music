@@ -15,7 +15,7 @@ class VideoPlayerPage extends StatefulWidget {
   _VideoPlayerState createState() => _VideoPlayerState(item, url);
 }
 
-class _VideoPlayerState extends State<VideoPlayerPage> {
+class _VideoPlayerState extends State<VideoPlayerPage> with AutomaticKeepAliveClientMixin {
   String url;
   var item;
   VideoPlayerController _controller;
@@ -42,14 +42,7 @@ class _VideoPlayerState extends State<VideoPlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      child: buildVideo(),
-      onPointerDown: (e) {
-        setState(() {
-          _controller.value.isPlaying ? _controller.pause() : _controller.play();
-        });
-      },
-    );
+    return showCard();
   }
 
   @override
@@ -58,20 +51,59 @@ class _VideoPlayerState extends State<VideoPlayerPage> {
     super.dispose();
   }
 
-  Widget buildVideo() {
+  Widget showCard() {
+    if (_controller.value.initialized) {
+      return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        width: double.infinity,
+        height: ScreenUtil.getInstance().setHeight(560),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            VideoPlayer(_controller),
+            Listener(
+              child:  buildIcon(),
+              onPointerDown: (e){
+                if(!_controller.value.isPlaying ){
+                  _controller.play();
+                }else{
+                  _controller.pause();
+                }
+              },
+            )
+
+          ],
+        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
+      );
+    }
+
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
       width: double.infinity,
       height: ScreenUtil.getInstance().setHeight(560),
-      child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: Container(
-          width: double.infinity,
-          child: VideoPlayer(_controller),
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
-        ),
+      child: Container(
+        width: 40,
+        height: 40,
+        child: CircularProgressIndicator(),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        image: DecorationImage(image: NetworkImage(url), fit: BoxFit.fill),
       ),
     );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  buildIcon() {
+    if( _controller.value.isPlaying){
+      return Icon(Icons.play_arrow ,color: Colors.transparent,size: 0,);
+    }
+
+    return Icon(Icons.play_arrow,color: Colors.white,size: 36);
   }
 }

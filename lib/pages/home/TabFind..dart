@@ -23,7 +23,7 @@ class TabFindPage extends StatefulWidget {
   }
 }
 
-class TabPageState extends State<TabFindPage> {
+class TabPageState extends State<TabFindPage> with AutomaticKeepAliveClientMixin {
   PageController controller = new PageController();
 
   @override
@@ -61,6 +61,9 @@ class TabPageState extends State<TabFindPage> {
       )
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 

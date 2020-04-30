@@ -15,7 +15,7 @@ class TabPersonPage extends StatefulWidget {
   _TabPersonState createState() => _TabPersonState();
 }
 
-class _TabPersonState extends State<TabPersonPage> with SingleTickerProviderStateMixin {
+class _TabPersonState extends State<TabPersonPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   Animation<double> animation;
   AnimationController controller;
 
@@ -51,4 +51,7 @@ class _TabPersonState extends State<TabPersonPage> with SingleTickerProviderStat
     controller.dispose();
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

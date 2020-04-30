@@ -20,7 +20,7 @@ class TabVideoPage extends StatefulWidget {
   _TabPersonState createState() => _TabPersonState();
 }
 
-class _TabPersonState extends State<TabVideoPage> {
+class _TabPersonState extends State<TabVideoPage>  with AutomaticKeepAliveClientMixin{
   Animation<double> animation;
   AnimationController controller;
 
@@ -55,10 +55,10 @@ class _TabPersonState extends State<TabVideoPage> {
               color: RedTheme.colorFFFFFF,
               child: new TabBarView(
                 children: <Widget>[
-                  MvPage(0),
-                  MvPage(1),
-                  MvPage(2),
-                  MvPage(3)
+                  MvCard(0),
+                  MvCard(1),
+                  MvCard(2),
+                  MvCard(3)
                 ],
               ),
             )));
@@ -68,9 +68,25 @@ class _TabPersonState extends State<TabVideoPage> {
     //路由销毁时需要释放动画资源
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
-class MvPage extends StatelessWidget {
+class MvCard extends StatefulWidget {
+
+  int index;
+
+  MvCard(int index) {
+    this.index = index;
+  }
+
+  @override
+  _MvCardState createState() => _MvCardState(index);
+}
+
+class _MvCardState extends State<MvCard> with AutomaticKeepAliveClientMixin{
+
   int index;
   List list = [
     "/mv/all",
@@ -79,9 +95,10 @@ class MvPage extends StatelessWidget {
     "/mv/exclusive/rcmd",
   ];
 
-  MvPage(int index) {
+  _MvCardState(int index) {
     this.index = index;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +141,10 @@ class MvPage extends StatelessWidget {
                               flex: 1,
                               child: Text(name, style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(48))),
                             ),
-                            CircleAvatar(
-                              radius: 20,
-                              child: Image.network(imgUrl, fit: BoxFit.fill),
-                            )
+//                            CircleAvatar(
+//                              radius: 20,
+//                              child: Image.network(imgUrl, fit: BoxFit.fill),
+//                            )
                           ],
                         )
                       ],
@@ -154,6 +171,10 @@ class MvPage extends StatelessWidget {
           return Container();
         });
   }
+
+  @override
+  bool get wantKeepAlive => true;
+
 }
 
 class VideoCard extends StatelessWidget {
