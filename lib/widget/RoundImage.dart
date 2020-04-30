@@ -8,8 +8,9 @@ class RoundImage extends StatelessWidget{
 
    final String url;
    final double width;
+   final double height;
 
-   RoundImage({Key key, this.width,this.url}) : super(key: key);
+   RoundImage({Key key, this.width,this.url,this.height}) : super(key: key);
 
 
   @override
@@ -21,7 +22,7 @@ class RoundImage extends StatelessWidget{
       imageBuilder: (context, imageProvider) => Container(
         alignment: Alignment.topRight,
         width: width,
-        height: width,
+        height: height,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(url),

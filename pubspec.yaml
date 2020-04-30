@@ -30,6 +30,7 @@ dependencies:
   audioplayers: ^0.15.1
   video_player: ^0.10.9+1
   chewie: 0.9.10
+  dio_cookie_manager: ^1.0.0  #latest version
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,7 @@ flutter:
     - images/t_dragonball_icn_radio.png
     - images/t_dragonball_icn_rank.png
     - images/c52.png
+    - images/day_bg.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
