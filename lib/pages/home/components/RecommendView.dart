@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,20 +81,21 @@ class RecommendView extends StatelessWidget {
                             0),
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              alignment: Alignment.topRight,
-                              width: ScreenUtil.getInstance().setWidth(300),
-                              height: ScreenUtil.getInstance().setHeight(300),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(obj['picUrl']),
-                                      fit: BoxFit.fill),
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                              child: Text(
-                                FUtils.init().formatNumber
-                                  (obj['playCount']) + " ",style: TextStyle
-                                (color: Colors.white),),
+                            Stack(
+                              children: <Widget>[
+                                CachedNetworkImage(
+                                  width: ScreenUtil.getInstance().setWidth(300),
+                                  height: ScreenUtil.getInstance().setHeight(300),
+                                  imageUrl: obj['picUrl'],
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                ),
+                                Positioned(
+                                  child: Text(FUtils.init().formatNumber(obj['playCount']) + " ",style: TextStyle(color: Colors.white)),
+                                  right: 0,
+                                )
+
+                              ],
                             ),
                             Container(
                               width: ScreenUtil.getInstance().setWidth(300),

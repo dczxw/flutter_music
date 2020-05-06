@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music/common/theme/Theme.dart';
-import 'package:music/pages/topic/DayTopic.dart';
 
 class TopicView extends StatelessWidget {
   @override
@@ -52,9 +51,7 @@ class TopicView extends StatelessWidget {
           ],
         ),
         onPointerDown: (e) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return DayTopicPage();
-          }));
+          Navigator.pushNamed(context,"day_topic_page");
         },
       ),
     );

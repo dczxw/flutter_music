@@ -127,8 +127,7 @@ class _NewSongViewState extends State<NewSongPage> {
                             children: <Widget>[
                               RoundImage(
                                 url:li[index]["picUrl"],
-                                width:ScreenUtil.getInstance()
-                                  .setHeight(160)),
+                                width:ScreenUtil.getInstance().setHeight(160)),
                               Text("  "),
                               Text(
                                 li[index]['name'],
