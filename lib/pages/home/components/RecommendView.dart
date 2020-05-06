@@ -72,7 +72,6 @@ class RecommendView extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       var obj = resultList[index];
-                      print(obj['picUrl']);
                       return Padding(
                         padding: EdgeInsets.fromLTRB(
                             ScreenUtil.getInstance().setHeight(30),
