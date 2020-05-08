@@ -61,5 +61,11 @@ class Got {
     return resp;
   }
 
+  Future<Map<String,dynamic>> loginPhone(String username,String password) async {
+    var resp = await dio.get("/login/cellphone", queryParameters:{"phone": username,"password":password}, options: _options);
+    return resp.data;
+  }
+
+
 
 }
