@@ -10,18 +10,21 @@ class FUtils {
   }
 
   formatNumber(num) {
-
     if (num > 100000000) {
-      return (num/100000000).toStringAsFixed(2)+"亿";
+      return (num / 100000000).toStringAsFixed(2) + "亿";
     }
 
     if (num > 10000) {
-      return (num/10000).toStringAsFixed(2)+"万";
+      return (num / 10000).toStringAsFixed(2) + "万";
     }
 
     if (num > 1000) {
-      return (num/1000).toStringAsFixed(2) +"千";
+      return (num / 1000).toStringAsFixed(2) + "千";
     }
     return num;
+  }
+
+  isEmpty(String string) {
+    return string == null || string == "";
   }
 }

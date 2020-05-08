@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:music/common/api/HttpManager.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/event/Message.dart';
 import 'package:music/common/theme/Theme.dart';
 import 'package:music/widget/RoundImage.dart';
@@ -17,8 +17,8 @@ class _DayTopicPageState extends State<DayTopicPage> {
 
   @override
   void initState() {
-    HttpManager.init().get("/login/cellphone", {'phone': '13386523365', 'password': '19921115dc'}).then(this.loginResponse);
-    HttpManager.init().get("/recommend/songs", {"q": "id"}).then(this.response);
+    Got.init().get("/login/cellphone", {'phone': '13386523365', 'password': '19921115dc'}).then(this.loginResponse);
+    Got.init().get("/recommend/songs", {"q": "id"}).then(this.response);
     super.initState();
   }
 

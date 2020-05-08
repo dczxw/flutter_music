@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:music/common/api/HttpManager.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
 import 'package:music/widget/RoundImage.dart';
 
@@ -85,7 +85,7 @@ class _NewSongViewState extends State<NewSongPage> {
           ],
         ),
         FutureBuilder(
-          future: HttpManager.init()
+          future: Got.init()
             .get("/personalized/newsong", {"limit": "10"}),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {

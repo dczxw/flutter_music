@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music/common/Utils.dart';
-import 'package:music/common/api/HttpManager.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
 
 class RecommendView extends StatelessWidget {
@@ -55,7 +55,7 @@ class RecommendView extends StatelessWidget {
           ],
         ),
         FutureBuilder(
-            future: HttpManager.init().get("/personalized", {"limit": "10"}),
+            future: Got.init().get("/personalized", {"limit": "10"}),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 Response response = snapshot.data;

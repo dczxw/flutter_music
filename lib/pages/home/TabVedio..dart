@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:music/common/api/HttpManager.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
 import 'package:music/widget/VideoPlayerPage.dart';
 
@@ -103,7 +103,7 @@ class _MvCardState extends State<MvCard> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: HttpManager.init().get(list[index], {"limit": 15, "area": '内地'}),
+        future: Got.init().get(list[index], {"limit": 15, "area": '内地'}),
         builder: (BuildContext c, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Response response = snapshot.data;
@@ -158,7 +158,7 @@ class _MvCardState extends State<MvCard> with AutomaticKeepAliveClientMixin{
 
   buildVideoCard(imgUrl, item) async {
     return FutureBuilder(
-        future: HttpManager.init().get("/mv/url", {"id": item['id']}),
+        future: Got.init().get("/mv/url", {"id": item['id']}),
         builder: (BuildContext c, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Response response = snapshot.data;
@@ -189,7 +189,7 @@ class VideoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: HttpManager.init().get("/mv/url", {"id": item['id']}),
+        future: Got.init().get("/mv/url", {"id": item['id']}),
         builder: (BuildContext c, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Response response = snapshot.data;

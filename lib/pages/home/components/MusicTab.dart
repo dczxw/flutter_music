@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music/common/Constants.dart';
-import 'package:music/common/api/HttpManager.dart';
+import 'package:music/common/Utils.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/event/EventBus.dart';
 import 'package:music/common/event/Message.dart';
 import 'package:provider/provider.dart';
@@ -30,15 +31,23 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
     return Consumer<MessageState>(
         builder: (context, categoryState, child){
-          id = categoryState.msgType.toString();
+          if(FUtils.init().isEmpty(categoryState.msgType.toString())){
+            id = categoryState.msgType.toString();
+          }
           return FutureBuilder(
-            future: HttpManager.init().get("/song/detail", {"ids": id}),
+            future: Got.init().get("/song/detail", {"ids": id}),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 Response response = snapshot.data;
                 var songs = response.data["songs"];
-                var picUrl = songs[0]['al']['picUrl'];
-                var title = songs[0]['al']['name'];
+                var picUrl = "";
+                var title = "";
+                if(songs.length>0){
+                   picUrl = songs[0]['al']['picUrl'];
+                   title = songs[0]['name'];
+                }else{
+                  picUrl = "https://p2.music.126.net/QHw-RuMwfQkmgtiyRpGs0Q==/102254581395219.jpg";
+                }
 
                 return Row(
                   children: <Widget>[
