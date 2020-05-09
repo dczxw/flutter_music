@@ -3,6 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:music/common/Constants.dart';
+import 'package:music/common/Global.dart';
+import 'package:music/common/Log.dart';
+import 'package:music/common/SpUtils.dart';
+import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,9 +17,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   TextEditingController _unameController = TextEditingController();
-
+  TextEditingController _upasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -28,11 +33,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: RedTheme.colorDC2C1F,
         alignment: Alignment.center,
+        width: double.infinity,
         child: Container(
-          padding: EdgeInsets.only(left: 30,top: 100, right: 30),
+          padding: EdgeInsets.only(left: 30, top: 100, right: 30),
           child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -46,18 +53,20 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: RedTheme.colorFFFFFF),
                 child: TextField(
                   autofocus: true,
+                  controller: _unameController,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "请输入用户名或邮箱",
+                      hintText: "请输入手机号码或邮箱",
                       hintStyle: TextStyle(color: RedTheme.color999999),
                       prefixIcon: Icon(Icons.person)),
                 ),
               ),
               Container(
                 height: 40,
-                margin: EdgeInsets.only(top: 20,bottom: 40),
+                margin: EdgeInsets.only(top: 20, bottom: 40),
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: RedTheme.colorFFFFFF),
                 child: TextField(
+                  controller: _upasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
                       border: InputBorder.none, hintText: "请输入登录密码", hintStyle: TextStyle(color: RedTheme.color999999), prefixIcon: Icon(Icons.lock)),
@@ -79,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  this.submit();
+                },
               )
             ],
           ),
@@ -87,4 +98,34 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  void submit(){
+    String username = _unameController.text.toString();
+    String password = _upasswordController.text.toString();
+
+    Log.d("AAAA", username);
+    Log.d("AAAA", password);
+
+    if(username.contains("@")){
+
+    }else{
+      Got.init().loginPhone(username, password).then(this.loginSuccess);
+    }
+  }
+
+  void loginSuccess(res){
+    if(res['code'] == 200){
+      SpUtils.putString(Constant.SP_TOKEN, res['token']);
+      Global.token = res["token"];
+      Navigator.pushNamed(context,"home");
+    }else{
+      Fluttertoast.showToast(
+        msg: res['code'],
+        toastLength: Toast.LENGTH_SHORT,
+        webBgColor: "#e74c3c",
+        timeInSecForIosWeb: 5,
+      );
+    }
+  }
+
 }

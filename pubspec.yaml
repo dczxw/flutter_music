@@ -33,6 +33,7 @@ dependencies:
   dio_cookie_manager: ^1.0.0  #latest version
   provider: 4.0.5+1  #latest version
   shared_preferences: ^0.5.7+1
+  fluttertoast: ^4.0.1
 
 dev_dependencies:
   flutter_test:
