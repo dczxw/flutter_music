@@ -8,10 +8,13 @@ import 'package:provider/provider.dart';
 import 'common/routers.dart';
 import 'common/theme/Theme.dart';
 
-void main() => Global.init().then((e) => runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => MessageState())],
-      child: MyApp(),
-    )));
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  Global.init().then((e) => runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (context) => MessageState())],
+    child: MyApp(),
+  )));
+}
 
 class MyApp extends StatelessWidget {
   @override

@@ -38,4 +38,9 @@ class SpUtils{
     return value;
   }
 
+  static void remove(String key) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
+
 }

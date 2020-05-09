@@ -25,7 +25,8 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     if (Platform.isAndroid) {
       // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
-      SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      SystemUiOverlayStyle systemUiOverlayStyle =
+          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
   }
@@ -50,7 +51,9 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: 40,
                 margin: EdgeInsets.only(top: 50),
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: RedTheme.colorFFFFFF),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: RedTheme.colorFFFFFF),
                 child: TextField(
                   autofocus: true,
                   controller: _unameController,
@@ -64,12 +67,17 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: 40,
                 margin: EdgeInsets.only(top: 20, bottom: 40),
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: RedTheme.colorFFFFFF),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: RedTheme.colorFFFFFF),
                 child: TextField(
                   controller: _upasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                      border: InputBorder.none, hintText: "请输入登录密码", hintStyle: TextStyle(color: RedTheme.color999999), prefixIcon: Icon(Icons.lock)),
+                      border: InputBorder.none,
+                      hintText: "请输入登录密码",
+                      hintStyle: TextStyle(color: RedTheme.color999999),
+                      prefixIcon: Icon(Icons.lock)),
                 ),
               ),
               FlatButton(
@@ -81,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: Text(
-                    "Submit",
+                    "登   录",
                     style: TextStyle(color: RedTheme.primaryColor),
                   ),
                 ),
@@ -99,33 +107,27 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void submit(){
+  void submit() {
     String username = _unameController.text.toString();
     String password = _upasswordController.text.toString();
 
-    Log.d("AAAA", username);
-    Log.d("AAAA", password);
-
-    if(username.contains("@")){
-
-    }else{
+    if (username.contains("@")) {
+    } else {
       Got.init().loginPhone(username, password).then(this.loginSuccess);
     }
   }
 
-  void loginSuccess(res){
-    if(res['code'] == 200){
-      SpUtils.putString(Constant.SP_TOKEN, res['token']);
-      Global.token = res["token"];
-      Navigator.pushNamed(context,"home");
-    }else{
+  void loginSuccess(res) {
+    if (res['code'] == 200) {
+      Global.saveUser(res["token"], res["profile"]['nickname'], res["profile"]['avatarUrl']);
+      Navigator.pushNamed(context, "home");
+    } else {
       Fluttertoast.showToast(
-        msg: res['code'],
+        msg: res['msg'],
         toastLength: Toast.LENGTH_SHORT,
         webBgColor: "#e74c3c",
         timeInSecForIosWeb: 5,
       );
     }
   }
-
 }

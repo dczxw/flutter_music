@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:music/common/Constants.dart';
+import 'package:music/common/Global.dart';
+import 'package:music/common/SpUtils.dart';
+import 'package:music/common/Utils.dart';
 import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
 import 'package:music/widget/RoundImage.dart';
@@ -11,12 +15,16 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   String username = "";
-  String avatar = "https://p3.music.126.net/ma8NC_MpYqC-dK_L81FWXQ==/109951163250233892.jpg";
+  String avatar = Global.avatar;
 
   @override
   void initState() {
     super.initState();
-    loadData();
+    if (!FUtils.init().isEmpty(Global.username)) {
+      setState(() {
+        username = Global.username;
+      });
+    }
   }
 
   @override
@@ -30,34 +38,66 @@ class _HomeDrawerState extends State<HomeDrawer> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(top: 50,bottom: 20),
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(avatar),
-                    backgroundColor: RedTheme.colorFFFFFF,
-                    radius: 40,
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(top: 50, bottom: 20),
+                        alignment: Alignment.center,
+                        child: buildImage(),
+                      ),
+                      Text(username,
+                          style: TextStyle(
+                              color: RedTheme.colorFFFFFF,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold))
+                    ],
                   ),
                 ),
-                Text(username,style: TextStyle(
+                FlatButton(
                   color: RedTheme.colorFFFFFF,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ))
+                  highlightColor: Colors.blue[700],
+                  colorBrightness: Brightness.dark,
+                  splashColor: Colors.grey,
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "退   出",
+                      style: TextStyle(color: RedTheme.primaryColor),
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  onPressed: () {
+                    this.logout();
+                  },
+                )
               ],
             ),
           )),
     );
   }
 
-  void loadData() async {
-    var userInfo = await Got.init().loginPhone("13386523365", "19921115dc");
-    Map<String,dynamic> profile = userInfo['profile'];
-    var nickname = profile['nickname'];
-    var avatarUrl = profile['avatarUrl'];
-    setState(() {
-      username = nickname;
-      avatar = avatarUrl;
-    });
+  Widget buildImage() {
+    if (FUtils.init().isEmpty(avatar)) {
+      return CircleAvatar(
+        backgroundImage: AssetImage("images/login_logo.jpg"),
+        backgroundColor: RedTheme.colorFFFFFF,
+        radius: 40,
+      );
+    }
+    return CircleAvatar(
+      backgroundImage: NetworkImage(avatar),
+      backgroundColor: RedTheme.colorFFFFFF,
+      radius: 40,
+    );
+  }
+
+  void logout() {
+    Global.clearUser();
+    Navigator.pushNamed(context, "login");
   }
 }
