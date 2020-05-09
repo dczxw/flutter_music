@@ -8,6 +8,7 @@ class RedTheme {
   static var color333333 = const Color(0xFF333333);
   static var color999999 = const Color(0xFF999999);
   static var colorE6E6E6 = const Color(0xFFE6E6E6);
+  static var colorDC2C1F = const Color(0xFFDC2C1F);
 }
 
 // iOS浅色主题
