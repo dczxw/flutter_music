@@ -1,3 +1,5 @@
+import 'package:fluttertoast/fluttertoast.dart';
+
 class FUtils {
   static FUtils inst;
 
@@ -24,7 +26,17 @@ class FUtils {
     return num;
   }
 
-  isEmpty(String string) {
+  static isEmpty(String string) {
     return string == null || string == "";
   }
+
+  static toast(String msg){
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      webBgColor: "#e74c3c",
+      timeInSecForIosWeb: 5,
+    );
+  }
+
 }

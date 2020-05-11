@@ -66,6 +66,9 @@ class Got {
     return resp.data;
   }
 
-
+  Future<Map<String,dynamic>> loginEmail(String username,String password) async {
+    var resp = await dio.get("/login", queryParameters:{"email": username,"password":password}, options: _options);
+    return resp.data;
+  }
 
 }

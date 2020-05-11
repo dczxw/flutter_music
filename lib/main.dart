@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget openHome() {
-    if (FUtils.init().isEmpty(Global.token)) {
+    if (FUtils.isEmpty(Global.token)) {
       return LoginPage();
     } else {
       return HomePage();

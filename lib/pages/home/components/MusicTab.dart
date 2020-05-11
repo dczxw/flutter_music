@@ -31,7 +31,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
     return Consumer<MessageState>(
         builder: (context, categoryState, child){
-          if(FUtils.init().isEmpty(categoryState.msgType.toString())){
+          if(FUtils.isEmpty(categoryState.msgType.toString())){
             id = categoryState.msgType.toString();
           }
           return FutureBuilder(

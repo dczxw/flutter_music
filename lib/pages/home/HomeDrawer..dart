@@ -16,11 +16,12 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer> {
   String username = "";
   String avatar = Global.avatar;
+  String avatarBg = Global.avatarBg;
 
   @override
   void initState() {
     super.initState();
-    if (!FUtils.init().isEmpty(Global.username)) {
+    if (!FUtils.isEmpty(Global.username)) {
       setState(() {
         username = Global.username;
       });
@@ -33,8 +34,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       child: MediaQuery.removePadding(
           context: context,
           child: Container(
-            color: RedTheme.color333333,
-            padding: EdgeInsets.all(30),
+            color: RedTheme.colorFFFFFF,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -43,37 +43,46 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(top: 50, bottom: 20),
+                        padding: EdgeInsets.only(top: 40, bottom: 20),
+                        width: double.infinity,
+                        height: 180,
+                        decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: buildImageBg(), fit: BoxFit.fill)),
                         alignment: Alignment.center,
-                        child: buildImage(),
+                        child: Column(
+                          children: <Widget>[
+                            buildImage(),
+                            Text(username, style: TextStyle(color: RedTheme.colorFFFFFF, fontSize: 20, fontWeight: FontWeight.bold))
+                          ],
+                        ),
                       ),
-                      Text(username,
-                          style: TextStyle(
-                              color: RedTheme.colorFFFFFF,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold))
+                      buildRow(0),
+                      buildRow(1),
+                      buildRow(2),
                     ],
                   ),
                 ),
-                FlatButton(
-                  color: RedTheme.colorFFFFFF,
-                  highlightColor: Colors.blue[700],
-                  colorBrightness: Brightness.dark,
-                  splashColor: Colors.grey,
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "退   出",
-                      style: TextStyle(color: RedTheme.primaryColor),
+                Container(
+                  padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
+                  child: FlatButton(
+                    color: RedTheme.primaryColor,
+                    highlightColor: Colors.blue[700],
+                    colorBrightness: Brightness.dark,
+                    splashColor: Colors.grey,
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "退   出",
+                        style: TextStyle(color: RedTheme.colorFFFFFF),
+                      ),
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    onPressed: () {
+                      this.logout();
+                    },
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  onPressed: () {
-                    this.logout();
-                  },
                 )
               ],
             ),
@@ -82,7 +91,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget buildImage() {
-    if (FUtils.init().isEmpty(avatar)) {
+    if (FUtils.isEmpty(avatar)) {
       return CircleAvatar(
         backgroundImage: AssetImage("images/login_logo.jpg"),
         backgroundColor: RedTheme.colorFFFFFF,
@@ -96,8 +105,38 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
+  NetworkImage buildImageBg() {
+    if (!FUtils.isEmpty(avatarBg)) {
+      return NetworkImage(avatarBg);
+    }
+    return NetworkImage("https://p4.music.126.net/_f8R60U9mZ42sSNvdPn2sQ==/109951162868126486.jpg");
+  }
+
   void logout() {
     Global.clearUser();
-    Navigator.pushNamed(context, "login");
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      'login',
+      (route) => route == null,
+    );
+  }
+
+  buildRow(int type) {
+    var nameList = ['我的收藏',"我的评论","我的文章"];
+    var iconList = [Icons.favorite,Icons.comment,Icons.book];
+
+    return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(left: 50,top: 15,bottom: 15,right: 20),
+        child: Row(
+          children: <Widget>[
+            Icon(iconList[type],color: RedTheme.primaryColor,),
+            Padding(
+              child: Text(nameList[type],style: TextStyle(
+                  fontSize: 16
+              )),
+              padding: EdgeInsets.only(left: 15),
+            )
+          ],
+        ));
   }
 }

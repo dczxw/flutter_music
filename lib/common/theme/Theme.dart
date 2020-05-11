@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 
 class RedTheme {
   static var primaryColor = const Color(0xFFFF2C55);
-  static var topicColor = const Color(0xFFFF1E13);
-  static var colorFFFFFF = const Color(0xFFFFFFFF);
-  static var color333333 = const Color(0xFF333333);
-  static var color999999 = const Color(0xFF999999);
-  static var colorE6E6E6 = const Color(0xFFE6E6E6);
-  static var colorDC2C1F = const Color(0xFFDC2C1F);
+  static var topicColor   = const Color(0xFFFF1E13);
+  static var colorFFFFFF  = const Color(0xFFFFFFFF);
+  static var color333333  = const Color(0xFF333333);
+  static var color999999  = const Color(0xFF999999);
+  static var colorE6E6E6  = const Color(0xFFE6E6E6);
+  static var colorDC2C1F  = const Color(0xFFDC2C1F);
+  static var colorMask    = const Color(0x90000000);
+  static var colorPurple  = Colors.purple;
+  static var colorPinkAccent  = Colors.pinkAccent;
+  static var colorGreenAccent  = Colors.greenAccent;
+  static var colorBlueAccent  = Colors.blueAccent;
+  static var colorBlack  = Colors.black;
 }
 
 // iOS浅色主题
