@@ -1,16 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:music/common/Constants.dart';
 import 'package:music/common/Global.dart';
-import 'package:music/common/Log.dart';
-import 'package:music/common/SpUtils.dart';
 import 'package:music/common/Utils.dart';
 import 'package:music/common/api/Got.dart';
 import 'package:music/common/theme/Theme.dart';
+import 'package:music/models/UserInfo.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -142,21 +138,24 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     if (username.contains("@")) {
-      Got.init().loginEmail(username, password).then(this.loginSuccess);
+      FUtils.toast("邮箱登录功能尚未完善~");
+//      Got.init().loginEmail(username, password).then(this.loginSuccess);
     } else {
-      Got.init().loginPhone(username, password).then(this.loginSuccess);
+      Got.init().loginPhone(username, password).then(this.loginSuccess).catchError(this.loginError);
     }
   }
 
-  void loginSuccess(res) {
+  void loginSuccess(UserInfo res) {
     setState(() {
       isLoading = false;
     });
-    if (res['code'] == 200) {
-      Global.saveUser(res["token"], res["profile"]['nickname'], res["profile"]['avatarUrl'],res["profile"]['avatarBg']);
-      Navigator.pushNamed(context, "home");
-    } else {
-     FUtils.toast(res['msg']);
-    }
+    Global.saveUser(res.token, res.nickname, res.avatar,res.avatarBg,res.userId);
+    Navigator.pushNamed(context, "home");
   }
+
+  void loginError(error){
+    FUtils.toast("请求数据失败~");
+  }
+
+
 }
