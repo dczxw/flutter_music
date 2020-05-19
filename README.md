@@ -1,16 +1,20 @@
-# music
+# flutter music
 
-A new Flutter application.
+一个自己拿来练手的flutter项目，仿照网易云音乐客户端编写，
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+- 下载源代码
 
-A few resources to get you started if this is your first Flutter project:
+```$xslt
+git clone https://github.com/dczxw/flutter_music.git
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- 安装依赖
+```$xslt
+flutter packages get
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Demo截图
+
+![alt](http://img.siuper.cn/ebd031b88e3f9d7b.png) ![alt](http://img.siuper.cn/0788fb7372e96f53.png)
